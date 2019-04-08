@@ -138,8 +138,8 @@ $(function () {
         //console.log('Next Button Clicked');
         evt.preventDefault();
         
-        console.log(`Next question Id : ${questionDataExtract.questionId}`);
-        console.log(`Total Question Count : ${questionDataExtract.TotalQuestions()}`);
+        //console.log(`Next question Id : ${questionDataExtract.questionId}`);
+        //console.log(`Total Question Count : ${questionDataExtract.TotalQuestions()}`);
         questionDataExtract.questionId = questionDataExtract.questionId + 1;
         if ((Number(questionDataExtract.questionId) - 1) >= Number(questionDataExtract.TotalQuestions())) {
             //end of the quiz occurred show final score page
@@ -165,7 +165,7 @@ $(function () {
     });
 
     $('.view-0').on('click', 'input[type="radio"]', function () {
-        console.log('radio btn checked' + $(this).val());
+        //console.log('radio btn checked' + $(this).val());
         userAnswers['CurrentAnswer'] = $(this).val();
     });
 
@@ -179,8 +179,8 @@ $(function () {
     function SendFeedback() {
         try {
             //this function is responsible of sending the feedback to the quiz app user on whether the answer is correct or not.
-            console.log(`Correct Ans : ${questionDataExtract.CorrectAnswer()}`);
-            console.log(`User Answer : ${questionDataExtract.UserAnswer()}`);
+            //console.log(`Correct Ans : ${questionDataExtract.CorrectAnswer()}`);
+            //console.log(`User Answer : ${questionDataExtract.UserAnswer()}`);
             let rightAnswer = questionDataExtract.CorrectAnswer();
             let userAnswer = questionDataExtract.UserAnswer();
             let cntCorrectAns = questionDataExtract.CorrectAnsCount;
@@ -234,10 +234,11 @@ $(function () {
           
         </label>
       </fieldset>  
+      <br><br>
       <button id="js-submit-button">Submit</button>
     
     </form>
-    
+    <br><br>
     <div id="status-bar">
       <span id="question-count">Question: ${questionDataExtract.questionId} of ${questionDataExtract.TotalQuestions()}</span>
       </div>
@@ -249,19 +250,25 @@ $(function () {
 
     function LoadWrongAnsView(rightAns,cntCorrect,questionNbr)
     {
-        let wrongAnsView = `<div id="pfeedback"><div>WRONG!</div>
+        let wrongAnsView = `<div><h2 class="wAns">WRONG!</h2></div>
+        <br><br>
         <div>Right Answer : <span class="rAns">${rightAns}</span></div>
+        <br><br>
         <button class ="nxtBtn">Next</button>
-        <div>Score:<span class="currScore">${cntCorrect}/${questionNbr}</span></div></div>`;
+        <br><br>
+        <div>Score:<span class="currScore">${cntCorrect}/${questionNbr}</span></div>`;
         $('.view-0').html(wrongAnsView);
     }
 
     function LoadCorrectAnsView(cntCorrect,questionNbr)
     {
-        let  rightAnsView = `<div id="pfeedback"><div>CORRECT!</div>
+        let  rightAnsView = `<div><h2 class="cAns">CORRECT!</h2></div>
+       
         <div><img src="thumbsUp.png"></div>
+        <br><br>
         <button class ="nxtBtn">Next</button>
-        <div>Score:<span class="currScore">${cntCorrect}/${questionNbr}</span></div></div>`;
+        <br><br>
+        <div>Score:<span class="currScore">${cntCorrect}/${questionNbr}</span></div>`;
         $('.view-0').html(rightAnsView);
     }
 
@@ -269,9 +276,9 @@ $(function () {
         let cntCorrectAns = questionDataExtract.CorrectAnsCount;
         let cntTotalQuestions = questionDataExtract.TotalQuestions();
         let finalPageView = `<div role="finalPage">
-        <h2>Final Score :</h2>
-        <br>
-        <div class="fScore">${cntCorrectAns}/${cntTotalQuestions}</div>
+        <h2>Final Score : ${cntCorrectAns}/${cntTotalQuestions}</h2>
+        <br><br>
+        
         <button class="btnStartAgain">Start Again ?</button>
     </div>`;
 $('.view-0').html(finalPageView);
