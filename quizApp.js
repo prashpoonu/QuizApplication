@@ -1,12 +1,12 @@
 $(function () {
     //questionDataExtract object is used to extract next question in the queue, get correct answer, get user answer and get the count of correct answers.
 
-    const questionDataExtract = {
+    let questionDataExtract = {
         questionId: 1,//this value will be incremented by 1 every time the answer status is shown and the user clicks next button and will be reset back to 1 when quiz finishes
         GetQuestion: function () {
             return questionList[this.questionId - 1]
         },
-        CorrectAnswer = function () {
+        CorrectAnswer: function () {
             return answers[this.questionId - 1];
         },
         UserAnswer: function () {
@@ -52,7 +52,7 @@ $(function () {
             text: `What country was the first to land a man on the moon?`,
             choice1: 'Great Britain',
             choice2: 'Russia',
-            choice3: 'United States',
+            choice3: 'United States of America',
             choice4: 'Germany',
         },
 
@@ -123,70 +123,78 @@ $(function () {
         'Italy',
     ];
 
-    const userAnswers = {
+    let userAnswers = {
 
-        CorrectAnswer: ""//this property of object is used to hold the answer selected by the user
+        CurrentAnswer: ""//this property of object is used to hold the answer selected by the user
     }
-    //const welcomePage = ``
-const questionPageView = `<section id="question-page" role="main">
-<h2 id="question">${questionDataExtract.GetQuestion().text}</h2>
-
-<form>
-  <fieldset>
-    <label>
-      <input class="answer" type="radio" name="option" checked></input>
-      <span>${questionDataExtract.GetQuestion().choice1}</span>
-    </label>
-
-    <label>
-      <input class="answer" type="radio" name="option"></input>
-      <span>${questionDataExtract.GetQuestion().choice2}</span>
-    </label>
-
-    <label>
-      <input class="answer" type="radio" name="option"></input>
-      <span>${questionDataExtract.GetQuestion().choice3}</span>
-    </label>
-
-    <label>
-      <input class="answer" type="radio" name="option"></input>
-      <span>${questionDataExtract.GetQuestion().choice4}</span>
-    </label>
-  </fieldset>  
-  <button id="js-submit-button">Submit</button>
-
-</form>
-
-<div id="status-bar">
-  <span id="question-count">Question: ${questionDataExtract.questionId} of ${questionDataExtract.TotalQuestions}</span>
-  </div>
-</section>`
     
-    const wrongAnsView = `<div>WRONG!</div>
-      <div>Right Answer : <span class="rAns">${questionDataExtract.CorrectAnswer()}</span></div>
-      <button class="nxtBtn">Next</button>
-      <div>Score:<span class="currScore">${questionDataExtract.CorrectAnsCount}/${questionDataExtract.questionId}</span></div>`
 
-    const rightAnsView = `<div>CORRECT!</div>
-      <div><img src="thumbsUp.png"></div>
-      <button class="nxtBtn">Next</button>
-      <div>Score:<span class="currScore">${questionDataExtract.CorrectAnsCount}/${questionDataExtract.questionId}</span></div>`
+    
 
+    
+
+    //Handle click event for Next Button
+    $('.view-0').on('click', '.nxtBtn', function (evt) {
+        //console.log('Next Button Clicked');
+        evt.preventDefault();
+        
+        console.log(`Next question Id : ${questionDataExtract.questionId}`);
+        console.log(`Total Question Count : ${questionDataExtract.TotalQuestions()}`);
+        questionDataExtract.questionId = questionDataExtract.questionId + 1;
+        if ((Number(questionDataExtract.questionId) - 1) >= Number(questionDataExtract.TotalQuestions())) {
+            //end of the quiz occurred show final score page
+            LoadFinalPage();
+        }
+        else {
+            //go back to the question page
+            //console.log(`Next question in the list : ${questionDataExtract.GetQuestion().text}`);
+            //questionDataExtract = questionDataExtract;
+            LoadQuestion();
+        }
+        
+    });
+
+    $('.sQuizBtn').click(function (event) {
+        event.preventDefault();
+        LoadQuestion();
+    });
+
+    $('.view-0').on('click', '#js-submit-button', function (event) {
+        event.preventDefault();
+        SendFeedback();
+    });
+
+    $('.view-0').on('click', 'input[type="radio"]', function () {
+        console.log('radio btn checked' + $(this).val());
+        userAnswers['CurrentAnswer'] = $(this).val();
+    });
+
+    $('.view-0').on('click','.btnStartAgain',function(){
+        userAnswers['CurrentAnswer']  = "";
+        questionDataExtract.questionId = 1;
+        LoadQuestion();
+    });
 
     function SendFeedback() {
         try {
             //this function is responsible of sending the feedback to the quiz app user on whether the answer is correct or not.
-
-
-            if (questionDataExtract.CorrectAnswer() === questionDataExtract.UserAnswer()) {
+            console.log(`Correct Ans : ${questionDataExtract.CorrectAnswer()}`);
+            console.log(`User Answer : ${questionDataExtract.UserAnswer()}`);
+            let rightAnswer = questionDataExtract.CorrectAnswer();
+            let userAnswer = questionDataExtract.UserAnswer();
+            let cntCorrectAns = questionDataExtract.CorrectAnsCount;
+            let currentQuestionId = questionDataExtract.questionId;
+            if (rightAnswer === userAnswer) {
                 //show the correct answer page
-                $('.view-0').html(rightAnsView);
+                
                 questionDataExtract.CorrectAnsCount = questionDataExtract.CorrectAnsCount + 1;
+                cntCorrectAns = questionDataExtract.CorrectAnsCount;
+                LoadCorrectAnsView(cntCorrectAns, currentQuestionId);
 
             }
             else {
                 //show wrong answer page
-                $('.view-0').html(wrongAnsView);
+                LoadWrongAnsView(rightAnswer, cntCorrectAns, currentQuestionId);
             }
         }
         catch (error) {
@@ -194,19 +202,86 @@ const questionPageView = `<section id="question-page" role="main">
         }
     }
 
-    //Handle click event for Next Button
-    $('body').on('click', '.nxtBtn', function () {
+    function LoadQuestion() {
+        let Question = questionDataExtract.GetQuestion().text;
+        let opt1 = questionDataExtract.GetQuestion().choice1;
+        let opt2 = questionDataExtract.GetQuestion().choice2;
+        let opt3 = questionDataExtract.GetQuestion().choice3;
+        let opt4 = questionDataExtract.GetQuestion().choice4;
 
-        questionDataExtract.questionId = questionDataExtract.questionId + 1;
-        if (questionDataExtract.questionId === questionDataExtract.TotalQuestions) {
-            //end of the quiz occurred show final score page
-        }
-        else {
-            //go back to the question page
-        }
-    });
+        let questionView = `<section id="question-page" role="main">
+    <h2 id="question">${Question}</h2>
+    
+    <form>
+      <fieldset>
+        <label>
+          <input class="answer" type="radio" name="option" value = "${opt1}">${opt1}</input>
+            </label>
+    
+        <label>
+          <input class="answer" type="radio" name="option" value = "${opt2}">${opt2}</input>
+          
+        </label>
+    
+        <label>
+          <input class="answer" type="radio" name="option" value = "${opt3}">${opt3}</input>
+          
+        </label>
+    
+        <label>
+          <input class="answer" type="radio" name="option" value = "${opt4}">${opt4}</input>
+          
+        </label>
+      </fieldset>  
+      <button id="js-submit-button">Submit</button>
+    
+    </form>
+    
+    <div id="status-bar">
+      <span id="question-count">Question: ${questionDataExtract.questionId} of ${questionDataExtract.TotalQuestions()}</span>
+      </div>
+    </section>`
+
+        $('.view-0').html(questionView);
+
+    }
+
+    function LoadWrongAnsView(rightAns,cntCorrect,questionNbr)
+    {
+        let wrongAnsView = `<div id="pfeedback"><div>WRONG!</div>
+        <div>Right Answer : <span class="rAns">${rightAns}</span></div>
+        <button class ="nxtBtn">Next</button>
+        <div>Score:<span class="currScore">${cntCorrect}/${questionNbr}</span></div></div>`;
+        $('.view-0').html(wrongAnsView);
+    }
+
+    function LoadCorrectAnsView(cntCorrect,questionNbr)
+    {
+        let  rightAnsView = `<div id="pfeedback"><div>CORRECT!</div>
+        <div><img src="thumbsUp.png"></div>
+        <button class ="nxtBtn">Next</button>
+        <div>Score:<span class="currScore">${cntCorrect}/${questionNbr}</span></div></div>`;
+        $('.view-0').html(rightAnsView);
+    }
+
+    function LoadFinalPage() {
+        let cntCorrectAns = questionDataExtract.CorrectAnsCount;
+        let cntTotalQuestions = questionDataExtract.TotalQuestions();
+        let finalPageView = `<div role="finalPage">
+        <h2>Final Score :</h2>
+        <br>
+        <div class="fScore">${cntCorrectAns}/${cntTotalQuestions}</div>
+        <button class="btnStartAgain">Start Again ?</button>
+    </div>`;
+$('.view-0').html(finalPageView);
+    }
+
+
 
 });
+
+
+
 
 
 
