@@ -172,6 +172,7 @@ $(function () {
     $('.view-0').on('click','.btnStartAgain',function(){
         userAnswers['CurrentAnswer']  = "";
         questionDataExtract.questionId = 1;
+        questionDataExtract.CorrectAnsCount = 0;
         LoadQuestion();
     });
 
