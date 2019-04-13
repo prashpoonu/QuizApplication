@@ -1,6 +1,21 @@
 body{
     line-height:14pt;
 }
+.welcomeCls
+{
+background-repeat:no-repeat;
+background-size:contain;
+background-position:center;
+width: 100%;
+
+  
+}
+.center
+{
+    position: absolute;
+  top: 90%; left: 50%;
+  transform: translate(-50%,-50%); 
+}
 .wAns{
     color: red;
 }
@@ -10,17 +25,30 @@ body{
 }
 
 button{
-    color: #0099CC;
-    background: transparent;
+    /* color: #0099CC; */
+     background-color: #008CBA;
+    /*text-colo */
+    /* background: transparent; */
     border: 2px solid #0099CC;
-    border-radius: 6px;
-    width:10em;
-    height: 3em;
+    border-radius: 10px;
+    width:15em;
+    height: 4em;
     text-align: center;
+    cursor: pointer;
+    font-size: 20px;
     
 }
 
-button:hover{
-    background-color: #008CBA;
-      color: white;
-}
+@media screen and (min-width: 601px) {
+    .headerTxt {
+      font-size: 80px!important;
+      text-align: center!important;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .headerTxt {
+      font-size: 30px;
+      text-align: center;
+    }
+  }
