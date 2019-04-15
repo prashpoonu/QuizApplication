@@ -22,7 +22,7 @@ $(function () {
     const questionList = [
         {
             number: 1,
-            text: `What country has the second largest population in the world?`,
+            text: `What country has the second largest population in the world ?`,
             choice1: 'India',
             choice2: 'Russia',
             choice3: 'United States',
@@ -31,7 +31,7 @@ $(function () {
 
         {
             number: 2,
-            text: `What country has a maple leaf on its national flag?`,
+            text: `What country has a maple leaf on its national flag ?`,
             choice1: 'Brasil',
             choice2: 'Luxembourg',
             choice3: 'Canada',
@@ -40,7 +40,7 @@ $(function () {
 
         {
             number: 3,
-            text: `What country is home to the Great Barrier Reef?`,
+            text: `What country is home to the Great Barrier Reef ?`,
             choice1: 'Chile',
             choice2: 'Madagascar',
             choice3: 'Cuba',
@@ -49,7 +49,7 @@ $(function () {
 
         {
             number: 4,
-            text: `What country was the first to land a man on the moon?`,
+            text: `What country was the first to land a man on the moon ?`,
             choice1: 'Great Britain',
             choice2: 'Russia',
             choice3: 'United States of America',
@@ -58,7 +58,7 @@ $(function () {
 
         {
             number: 5,
-            text: `What is the largest country by size and population in South America?`,
+            text: `What is the largest country by size and population in South America ?`,
             choice1: 'Chile',
             choice2: 'Brasil',
             choice3: 'Venezuela',
@@ -67,7 +67,7 @@ $(function () {
 
         {
             number: 6,
-            text: `The Kiwi is a flightless bird that lives in what country?`,
+            text: `The Kiwi is a flightless bird that lives in what country ?`,
             choice1: 'Mexico',
             choice2: 'Spain',
             choice3: 'China',
@@ -76,7 +76,7 @@ $(function () {
 
         {
             number: 7,
-            text: `Zurich is the largest city in what country`,
+            text: `Zurich is the largest city in what country ?`,
             choice1: 'Sweden',
             choice2: 'Denmark',
             choice3: 'Switzerland',
@@ -85,7 +85,7 @@ $(function () {
 
         {
             number: 8,
-            text: `In terms of land area, what is the largest country in the world?`,
+            text: `In terms of land area, what is the largest country in the world ?`,
             choice1: 'United States',
             choice2: 'Russia',
             choice3: 'Australia',
@@ -94,7 +94,7 @@ $(function () {
 
         {
             number: 9,
-            text: `Mt. Fuji is the highest mountain in what country?`,
+            text: `Mt. Fuji is the highest mountain in what country ?`,
             choice1: 'American Samoa',
             choice2: 'China',
             choice3: 'Japan',
@@ -103,7 +103,7 @@ $(function () {
 
         {
             number: 10,
-            text: `Leonardo da Vinci was born in what country?`,
+            text: `Leonardo da Vinci was born in what country ?`,
             choice1: 'Italy',
             choice2: 'Monaco',
             choice3: 'Belgium',
@@ -127,31 +127,27 @@ $(function () {
 
         CurrentAnswer: ""//this property of object is used to hold the answer selected by the user
     }
-    
 
-    
 
-    
+
+
+
 
     //Handle click event for Next Button
     $('.view-0').on('click', '.nxtBtn', function (evt) {
         //console.log('Next Button Clicked');
         evt.preventDefault();
-        
-        //console.log(`Next question Id : ${questionDataExtract.questionId}`);
-        //console.log(`Total Question Count : ${questionDataExtract.TotalQuestions()}`);
+        userAnswers['CurrentAnswer'] = "";
         questionDataExtract.questionId = questionDataExtract.questionId + 1;
         if ((Number(questionDataExtract.questionId) - 1) >= Number(questionDataExtract.TotalQuestions())) {
             //end of the quiz occurred show final score page
             LoadFinalPage();
         }
         else {
-            //go back to the question page
-            //console.log(`Next question in the list : ${questionDataExtract.GetQuestion().text}`);
-            //questionDataExtract = questionDataExtract;
+
             LoadQuestion();
         }
-        
+
     });
 
     $('.sQuizBtn').click(function (event) {
@@ -169,8 +165,8 @@ $(function () {
         userAnswers['CurrentAnswer'] = $(this).val();
     });
 
-    $('.view-0').on('click','.btnStartAgain',function(){
-        userAnswers['CurrentAnswer']  = "";
+    $('.view-0').on('click', '.btnStartAgain', function () {
+        userAnswers['CurrentAnswer'] = "";
         questionDataExtract.questionId = 1;
         questionDataExtract.CorrectAnsCount = 0;
         LoadQuestion();
@@ -179,15 +175,17 @@ $(function () {
     function SendFeedback() {
         try {
             //this function is responsible of sending the feedback to the quiz app user on whether the answer is correct or not.
-            //console.log(`Correct Ans : ${questionDataExtract.CorrectAnswer()}`);
-            //console.log(`User Answer : ${questionDataExtract.UserAnswer()}`);
             let rightAnswer = questionDataExtract.CorrectAnswer();
             let userAnswer = questionDataExtract.UserAnswer();
             let cntCorrectAns = questionDataExtract.CorrectAnsCount;
             let currentQuestionId = questionDataExtract.questionId;
+            if(userAnswer===null || userAnswer==="")
+            {
+                userAnswer = GetDefaultRadioBtnVal();
+            }
             if (rightAnswer === userAnswer) {
                 //show the correct answer page
-                
+
                 questionDataExtract.CorrectAnsCount = questionDataExtract.CorrectAnsCount + 1;
                 cntCorrectAns = questionDataExtract.CorrectAnsCount;
                 LoadCorrectAnsView(cntCorrectAns, currentQuestionId);
@@ -203,7 +201,22 @@ $(function () {
         }
     }
 
-    function LoadQuestion() {
+    function GetDefaultRadioBtnVal()
+    {
+        let radios = document.getElementsByName('option');
+        for(var i=0; i< radios.length;i++)
+        {
+            if(radios[i].type==="radio" && radios[i].checked===true)
+            {
+                //console.log(`Default Checkbox Value : ${$(radios[i]).attr('value')}`);
+                return $(radios[i]).attr('value');
+                
+            }
+        }
+    }
+
+    function LoadQuestion() 
+    {
         let Question = questionDataExtract.GetQuestion().text;
         let opt1 = questionDataExtract.GetQuestion().choice1;
         let opt2 = questionDataExtract.GetQuestion().choice2;
@@ -211,64 +224,69 @@ $(function () {
         let opt4 = questionDataExtract.GetQuestion().choice4;
 
         let questionView = `<section id="question-page" role="main">
-    <h2 id="question">${Question}</h2>
-    
+        <div id="status-bar">
+          <span id="question-count">Question: ${questionDataExtract.questionId} of ${questionDataExtract.TotalQuestions()}</span>
+          </div>
+    <h2 class="question">${Question}</h2>
     <form>
-      <fieldset>
-        <label>
-          <input class="answer" type="radio" name="option" value = "${opt1}">${opt1}</input>
-            </label>
-    
-        <label>
-          <input class="answer" type="radio" name="option" value = "${opt2}">${opt2}</input>
+      <div class="form-field">
+      
+          <input class="answer" type="radio" name="option" value = "${opt1}">
+         <label>${opt1}</label><br/><br/><br/>
+        
+          <input class="answer" type="radio" name="option" value = "${opt2}" checked>
+          <label>${opt2}</label><br/><br/><br/>
           
-        </label>
-    
-        <label>
-          <input class="answer" type="radio" name="option" value = "${opt3}">${opt3}</input>
-          
-        </label>
-    
-        <label>
-          <input class="answer" type="radio" name="option" value = "${opt4}">${opt4}</input>
-          
-        </label>
-      </fieldset>  
-      <br><br>
-      <button id="js-submit-button">Submit</button>
-    
-    </form>
-    <br><br>
-    <div id="status-bar">
-      <span id="question-count">Question: ${questionDataExtract.questionId} of ${questionDataExtract.TotalQuestions()}</span>
-      </div>
-    </section>`
+          <input class="answer" type="radio" name="option" value = "${opt3}">
+          <label>${opt3}</label><br/><br/><br/>
+         
+          <input class="answer" type="radio" name="option" value = "${opt4}">
+          <label>${opt4}</label><br/><br/>
+          </div>
+          <br/><br/>
+          <button id="js-submit-button">Submit</button>
+        
+        </form>
+        </section>`
 
         $('.view-0').html(questionView);
 
     }
 
-    function LoadWrongAnsView(rightAns,cntCorrect,questionNbr)
-    {
-        let wrongAnsView = `<div><h2 class="wAns">WRONG!</h2></div>
-        <br><br>
-        <div>Right Answer : <span class="rAns">${rightAns}</span></div>
-        <br><br>
-        <button class ="nxtBtn">Next</button>
-        <br><br>
-        <div>Score:<span class="currScore">${cntCorrect}/${questionNbr}</span></div>`;
+
+
+
+
+
+    function LoadWrongAnsView(rightAns, cntCorrect, questionNbr) {
+        let wrongAnsView = `<div class="resultContainer">
+        <div class="scoreCard">
+            <div class = "scoreHeader">Score</div>
+            <div class="score">${cntCorrect}/${questionNbr}</div>
+        </div>
+        <div class="resultIconFail">
+        <img src="VerySadFace.png" alt="N/A" class="responsivePt" width="256" height="256">
+        </div>
+        <div class="ansStatus">Your Answer Is Incorrect </div><br/>
+        <div class="ansStatus">Right Answer : ${rightAns} </div>
+        </div>
+        <button class ="nxtBtn">Next</button> `
         $('.view-0').html(wrongAnsView);
     }
 
-    function LoadCorrectAnsView(cntCorrect,questionNbr)
-    {
-        let  rightAnsView = `<div><h2 class="cAns">CORRECT!</h2></div>
-       
-        <div><img src="thumbsUp.png"></div>
-        <br><br>
-        <button class ="nxtBtn">Next</button>
-        <br><br>
-        <div>Score:<span class="currScore">${cntCorrect}/${questionNbr}</span></div>`;
+    function LoadCorrectAnsView(cntCorrect, questionNbr) {
+        
+        let rightAnsView = `<div class="resultContainer">
+        <div class="scoreCard">
+            <div class = "scoreHeader">Score</div>
+            <div class="score">${cntCorrect}/${questionNbr}</div>
+        </div>
+        <div class="resultIconSuccess">
+        <img src="SmilingFace.png" alt="N/A" class="responsivePt" width="256" height="256">
+        </div>
+        <div class="ansStatus">Your Answer Is Correct </div>
+       </div>
+       <button class ="nxtBtn">Next</button>`
         $('.view-0').html(rightAnsView);
     }
 
@@ -281,7 +299,7 @@ $(function () {
         
         <button class="btnStartAgain">Start Again ?</button>
     </div>`;
-$('.view-0').html(finalPageView);
+        $('.view-0').html(finalPageView);
     }
 
 
@@ -294,47 +312,4 @@ $('.view-0').html(finalPageView);
 
 
 
-// A function that listens for button clicks and submits its ID to the decideView()
 
-// A function that on form submit checks for if the answer is correct
-    // then submits the view and any extra IDs to the decideView()
-
-// A function that decides which view to change to
-    // 1st arg = current view
-
-// A function that checks the view num and updates the button text
-    // Make an object with the possible texts
-
-// A function that renders
-
-// <!-- View 1 for starting Page -->
-
-// // <div class="view0">
-// //     <div id='welcomePicture'>
-// //         <img src="https://longdonclub.co.uk/wp/wp-content/uploads/2017/12/Quiz@Kvarteret-e1518802228786.png"
-// //             alt='Unable to Load Image'></img>
-// //     </div>
-// {/* <button id="quizBtn">Start Quiz</button> */}
-// // </div>
-
-// // /* <!-- View 2 for Question Page --> */
-// //         <div class="view2" role="QuestionPage">
-// //             <div class="questionPanel">
-
-// //             </div>
-// //             <div class="answerPanel">
-
-// //             </div>
-// {/* <button id="quizBtn">Start Quiz</button> */}
-// //         </div>
-
-// // /* <!-- View 3 for Response Page --> */
-// //         <div class="view3" role="ResponsePage">
-// //             <div class="responsePanel">
-
-// //             </div>
-// //             <div class="correctAnsPanel">
-//https://www.google.com/search?q=thumbs+up&rlz=1C1CHBF_enUS842US842&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjNue3K4rfhAhUFnKwKHeLsAkUQ_AUIDigB&biw=1707&bih=778&dpr=1.5#imgrc=RQajt-rDHysSWM:
-// //             </div>
-// {/* <button id="quizBtn">Start Quiz</button> */}
-// //         </div>
