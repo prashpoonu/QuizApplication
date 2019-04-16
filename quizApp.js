@@ -265,12 +265,12 @@ $(function () {
             <div class="score">${cntCorrect}/${questionNbr}</div>
         </div>
         <div class="resultIconFail">
-        <img src="VerySadFace.png" alt="N/A" class="responsivePt" width="256" height="256">
+        <img src="VerySadFace.png" alt="N/A" class="responsivePt">
         </div>
         <div class="ansStatus">Your Answer Is Incorrect </div><br/>
         <div class="ansStatus">Right Answer : ${rightAns} </div>
-        </div>
-        <button class ="nxtBtn">Next</button> `
+        <button class ="nxtBtn">Next</button> 
+        </div>`
         $('.view-0').html(wrongAnsView);
     }
 
@@ -282,11 +282,11 @@ $(function () {
             <div class="score">${cntCorrect}/${questionNbr}</div>
         </div>
         <div class="resultIconSuccess">
-        <img src="SmilingFace.png" alt="N/A" class="responsivePt" width="256" height="256">
+        <img src="SmilingFace.png" alt="N/A" class="responsivePt">
         </div>
         <div class="ansStatus">Your Answer Is Correct </div>
-       </div>
-       <button class ="nxtBtn">Next</button>`
+        <button class ="nxtBtn">Next</button>
+       </div>`
         $('.view-0').html(rightAnsView);
     }
 
