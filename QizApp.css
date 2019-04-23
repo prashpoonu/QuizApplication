@@ -36,7 +36,7 @@ width: 100%;
     
 }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: 801px) {
     .headerTxt {
       font-size: 80px!important;
       font-family:corbel,sans-serif;
@@ -46,7 +46,7 @@ width: 100%;
     }
   }
   
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 800px) {
     .headerTxt {
         font-size: 30px!important; 
       font-family:corbel,sans-serif;
@@ -64,7 +64,7 @@ width: 100%;
     #question-page{
       line-height: 25px;
     }
-    .resultContainer{
+    .resultContainer,.finalPage{
       min-width:100%;
       min-height: 100%;
     }
@@ -79,16 +79,16 @@ width: 100%;
       height:25vh;
     }
     .nxtBtn{
-      position: relative;
-  top: 100%; left: 50%;
-  /* transform: translate(-50%,-50%); */
+      top:100%;
+      left:50%;
+      
     }
     .scoreCard{
       padding-top:15px;
     }
     .ansStatus{
-      font-size: 10px;
-      padding-top: 15px;
+      font-size: 5px;
+      padding-top: 30px;
     }
 
     /* .sQuizBtn{
@@ -152,7 +152,7 @@ margin-bottom: auto;
    
 }
 
-.resultContainer{
+.resultContainer,.finalPage{
   width:50%;
   height: 350px;
   /* background-color: powderblue; */
@@ -162,6 +162,18 @@ margin-bottom: auto;
   margin: 0 auto;
    /* align-items: center; */
   /* text-align: center */
+}
+.finalPage{
+  background-image: url('finalPageImg.jpg');
+}
+.fScore{
+  position: absolute;
+  text-align: center;
+  color: green;
+  top: 280px;
+  left: 0;
+  right: 0;
+  /* margin-top: -9px; */
 }
 
 .scoreCard{
@@ -206,6 +218,12 @@ margin-bottom: auto;
   margin-top: 40px; 
  
 /* s */
+}
+.btnStartAgain{
+  position: absolute;
+  top: 55%; left: 50%;
+  transform: translate(-50%,-50%);
+  margin-top: 40px; 
 }
 /* .btnSection{
   padding-top: 15px;

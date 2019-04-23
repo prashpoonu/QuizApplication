@@ -293,8 +293,8 @@ $(function () {
     function LoadFinalPage() {
         let cntCorrectAns = questionDataExtract.CorrectAnsCount;
         let cntTotalQuestions = questionDataExtract.TotalQuestions();
-        let finalPageView = `<div role="finalPage">
-        <h2>Final Score : ${cntCorrectAns}/${cntTotalQuestions}</h2>
+        let finalPageView = `<div class="finalPage">
+        <h2 class="fScore">Final Score : ${cntCorrectAns}/${cntTotalQuestions}</h2>
         <br><br>
         
         <button class="btnStartAgain">Start Again ?</button>
